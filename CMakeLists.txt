@@ -57,6 +57,13 @@ endif()
 add_library(${PROJECT_NAME}-static STATIC ${ALL_FILES})
 add_library(SDL3_gfx::SDL3_gfx-static ALIAS ${PROJECT_NAME}-static)
 
+# Create SDL3_gfx::SDL3_gfx alias based on BUILD_SHARED_LIBS
+if(BUILD_SHARED_LIBS AND NOT (CMAKE_SYSTEM_NAME STREQUAL "Emscripten"))
+  add_library(SDL3_gfx::SDL3_gfx ALIAS ${PROJECT_NAME}-shared)
+else()
+  add_library(SDL3_gfx::SDL3_gfx ALIAS ${PROJECT_NAME}-static)
+endif()
+
 # Set 3 properties on the static target
 set_target_properties(
     ${PROJECT_NAME}-static PROPERTIES
