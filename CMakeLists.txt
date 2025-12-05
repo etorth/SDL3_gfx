@@ -10,6 +10,7 @@ list(GET SO_VERSION_COMPONENTS 0 SO_VERSION_MAJOR)
 ################################################################################
 # Options
 ################################################################################
+option(BUILD_SHARED_LIBS "Build shared library" ON)
 option(BUILD_TESTS "Build tests" Off)
 
 ################################################################################
@@ -47,7 +48,7 @@ set(ALL_FILES
 # Target
 ################################################################################
 # Build an static and a dynamic library.
-if(NOT (CMAKE_SYSTEM_NAME STREQUAL "Emscripten"))
+if(BUILD_SHARED_LIBS AND NOT (CMAKE_SYSTEM_NAME STREQUAL "Emscripten"))
   add_library(${PROJECT_NAME}_Shared SHARED ${ALL_FILES})
 endif()
 add_library(${PROJECT_NAME}_Static STATIC ${ALL_FILES})
@@ -59,7 +60,7 @@ set_target_properties(
   ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_NAME}_Static
   PUBLIC_HEADER "${Headers}"
 )
-if(NOT(CMAKE_SYSTEM_NAME STREQUAL "Emscripten"))
+if(BUILD_SHARED_LIBS AND NOT(CMAKE_SYSTEM_NAME STREQUAL "Emscripten"))
   set_target_properties(
       ${PROJECT_NAME}_Shared PROPERTIES
     VERSION "${CMAKE_PROJECT_VERSION}" SOVERSION "${SO_VERSION_MAJOR}"
@@ -73,7 +74,7 @@ endif()
 ################################################################################
 # Specify include directories to use when compiling SDL3_gfx
 # Include SDL3 include folder
-if(NOT (CMAKE_SYSTEM_NAME STREQUAL "Emscripten"))
+if(BUILD_SHARED_LIBS AND NOT (CMAKE_SYSTEM_NAME STREQUAL "Emscripten"))
   target_include_directories(${PROJECT_NAME}_Shared PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/../SDL/include"
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -101,12 +102,12 @@ endif()
 
 # Specify libraries directories that we will link with SDL3_gfx.
 # Static libraries don't need linking.
-if(NOT(CMAKE_SYSTEM_NAME STREQUAL "Emscripten"))
+if(BUILD_SHARED_LIBS AND NOT(CMAKE_SYSTEM_NAME STREQUAL "Emscripten"))
   target_link_libraries(${PROJECT_NAME}_Shared PRIVATE SDL3::SDL3)
 endif()
 
 # copy to default locations
-if(NOT(CMAKE_SYSTEM_NAME STREQUAL "Emscripten"))
+if(BUILD_SHARED_LIBS AND NOT(CMAKE_SYSTEM_NAME STREQUAL "Emscripten"))
   install (TARGETS ${PROJECT_NAME}_Shared
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin
