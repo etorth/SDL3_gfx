@@ -366,7 +366,7 @@ bool roundedRectangleColor(SDL_Renderer * renderer, float x1, float y1, float x2
 */
 bool roundedRectangleRGBA(SDL_Renderer * renderer, float x1, float y1, float x2, float y2, float rad, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
-	Sint32 result = 0;
+	bool result = true;
 	float tmp;
 	float w, h;
 	float xx1, xx2;
