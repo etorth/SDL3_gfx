@@ -514,13 +514,8 @@ bool roundedBoxRGBA(SDL_Renderer * renderer, float x1, float y1, float x2,
 {
 	bool result;
 	float w, h, r2, tmp;
-	float cx = 0;
-	float cy = rad;
 	float ocx = (float) 0xffff;
 	float ocy = (float) 0xffff;
-	float df = 1 - rad;
-	float d_e = 3;
-	float d_se = -2 * rad + 5;
 	float xpcx, xmcx, xpcy, xmcy;
 	float ypcy, ymcy, ypcx, ymcx;
 	float x, y, dx, dy;
@@ -601,6 +596,11 @@ bool roundedBoxRGBA(SDL_Renderer * renderer, float x1, float y1, float x2,
 	}
 
 	/* Setup filled circle drawing for corners */
+	float cx = 0;
+	float cy = rad;
+	float df = 1 - rad;
+	float d_e = 3;
+	float d_se = -2 * rad + 5;
 	x = x1 + rad;
 	y = y1 + rad;
 	dx = x2 - x1 - rad - rad;
@@ -663,7 +663,7 @@ bool roundedBoxRGBA(SDL_Renderer * renderer, float x1, float y1, float x2,
 	} while (cx <= cy);
 
 	/* Inside */
-	if (dx > 0 && dy > 0) {
+	if (dy > 0) {
 		result &= boxRGBA(renderer, x1, y1 + rad + 1, x2, y2 - rad, r, g, b, a);
 	}
 
